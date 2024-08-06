@@ -1,25 +1,32 @@
-import './App.css'
-import Header from './components/Header';
+import './App.css';
+import { useState } from 'react';
+import Header from './components/Header/Header';
 import TeachingSection from './components/TeachingSection';
 import DifferencesSection from './components/DifferencesSection';
+import IntroSection from './components/IntroSection';
+import TabsSection from './components/TabsSection';
+import FeedbackSection from './components/FeedbackSection';
 
 export default function App() {
-
-  // let tabContent = null;
-
-  // if (contentType) {
-  //   tabContent = <p>{differences[contentType]}</p>
-  // } else {
-  //   tabContent = <p>Нажми на кнопку</p>
-  // }
+  const [tab, setTab] = useState('feedback');
 
   return (
-    <div>
+    <>
       <Header />
       <main>
-        <TeachingSection />
-        <DifferencesSection />
+        <IntroSection />
+        <TabsSection active={tab} onChange={(current) => setTab(current)} />
+
+        {tab === 'main' && (
+          <>
+            <TeachingSection />
+            <DifferencesSection />
+          </>
+        )}
+
+        {tab === 'feedback' && <FeedbackSection />}
+
       </main>
-    </div>
+    </>
   )
 }
