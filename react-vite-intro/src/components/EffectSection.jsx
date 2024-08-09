@@ -1,25 +1,51 @@
 import Button from "./Button/Button";
 import Modal from "./Modal/Modal";
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import useInput from "../hooks/useInput";
 
 export default function EffectSection() {
+  const input = useInput()
   const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  function openModal() {
-    setModal(true)
+  const fetchUsers = async function() {
+    setLoading(true)
+    const response = await fetch('https://jsonplaceholder.typicode.com/users')
+    const users = await response.json()
+    setUsers(users)
+    setLoading(false)
   }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
 
   return (
     <section>
       <h3>Effects</h3>
 
-      <Button onClick={openModal}>Открыть информацию</Button>
+      <Button style={{ marginBottom: '1rem' }} onClick={() => setModal(true)}>Открыть информацию</Button>
 
       <Modal open={modal}>
         <h3>Hello from modal</h3>
         <p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</p>
         <Button onClick={() => setModal(false)}>Close modal</Button>
       </Modal>
+
+      {loading && <p>Loading...</p>}
+
+      {!loading && (
+        <>
+          <input type="text" className="control" {...useInput} />
+          <h6>{input.value}</h6>
+          <ul>
+            {users.map((user) => (
+              <li key={user.id}>{user.name}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   )
 }
