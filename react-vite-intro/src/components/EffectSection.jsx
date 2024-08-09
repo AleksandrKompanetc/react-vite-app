@@ -40,7 +40,7 @@ export default function EffectSection() {
           <input type="text" className="control" {...useInput} />
           <h6>{input.value}</h6>
           <ul>
-            {users.map((user) => (
+            {users.filter(user => user.name.toLowerCase().includes(input.value.toLowerCase())).map((user) => (
               <li key={user.id}>{user.name}</li>
             ))}
           </ul>
