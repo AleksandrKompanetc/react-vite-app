@@ -9,12 +9,12 @@ export default function EffectSection() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
 
-  const fetchUsers = async function() {
+  async function fetchUsers() {
     setLoading(true)
-    const response = await fetch('https://jsonplaceholder.typicode.com/users')
-    const users = await response.json()
-    setUsers(users)
-    setLoading(false)
+      const response = await fetch('https://jsonplaceholder.typicode.com/users')
+      const users = await response.json()
+      setUsers(users)
+      setLoading(false)
   }
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function EffectSection() {
 
       {!loading && (
         <>
-          <input type="text" className="control" {...useInput} />
+          <input type="text" className="control" {...input} />
           <h6>{input.value}</h6>
           <ul>
             {users.filter(user => user.name.toLowerCase().includes(input.value.toLowerCase())).map((user) => (
